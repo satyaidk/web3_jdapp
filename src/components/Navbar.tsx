@@ -55,7 +55,7 @@ const Navbar = () => {
           <div className="flex-shrink-0 flex items-center">
             <Link 
               href={isEventsPage ? '/' : '/events'} 
-              className="text-2xl font-bold hover:text-white dark:text-white dark:hover:text-red-500 transition-colors duration-300"
+              className="text-2xl font-bold text-gray-900 hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400 transition-colors duration-300"
             >
               {isEventsPage ? 'Events' : 'Job Network'}
             </Link>
@@ -140,7 +140,12 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
+            <div className={cn(
+              "pt-4 pb-3 border-t transition-all duration-300",
+              isScrolled
+                ? "border-white/10"
+                : "border-gray-200/50 dark:border-gray-700/50"
+            )}>
               <div className="flex items-center px-3 space-x-3">
                 <Link
                   href="/login"
