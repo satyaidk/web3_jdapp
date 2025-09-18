@@ -18,10 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 text-gray-900 dark:text-gray-100 transition-colors duration-200`}>
+      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-gray-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 text-gray-900 dark:text-gray-100 transition-colors duration-200`}>
         <ThemeProvider>
           <Navbar />
-          <main className="min-h-screen">
+          <main className="min-h-screen pt-20">
             {children}
           </main>
         </ThemeProvider>

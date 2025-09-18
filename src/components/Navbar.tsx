@@ -1,15 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import ThemeToggle from './ThemeToggle';
+import { cn } from '../lib/utils';
 
 const Navbar = () => {
   const pathname = usePathname();
   const isEventsPage = pathname?.startsWith('/events') ?? false;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   const jobLinks = [
     { name: 'Home', href: '/' },
@@ -31,14 +41,21 @@ const Navbar = () => {
   const navLinks = isEventsPage ? eventLinks : jobLinks;
 
   return (
-    <nav className="bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <header
+      className={cn(
+        "fixed top-0 w-full z-50 transition-all duration-300 rounded-b-2xl mx-2 mt-2",
+        isScrolled
+          ? "bg-background/20 backdrop-blur-md border border-white/10 shadow-lg rounded-2xl max-w-7xl left-1/2 transform -translate-x-1/2"
+          : "bg-transparent max-w-full left-0 transform-none",
+      )}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link 
               href={isEventsPage ? '/' : '/events'} 
-              className="text-xl font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200"
+              className="text-2xl font-bold text-gray-900 hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400 transition-colors duration-300"
             >
               {isEventsPage ? 'Events' : 'Job Network'}
             </Link>
@@ -63,7 +80,6 @@ const Navbar = () => {
 
           {/* Right side buttons */}
           <div className="hidden md:flex md:items-center md:space-x-4">
-            <ThemeToggle />
             <Link
               href="/login"
               className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
@@ -85,8 +101,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            <ThemeToggle />
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800 transition-colors duration-200"
@@ -105,7 +120,12 @@ const Navbar = () => {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+          <div className={cn(
+            "px-2 pt-2 pb-3 space-y-1 border-t transition-all duration-300",
+            isScrolled
+              ? "bg-background/20 backdrop-blur-md border-white/10"
+              : "bg-white/10 backdrop-blur-sm border-gray-200/50 dark:border-gray-700/50"
+          )}>
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -120,7 +140,12 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
+            <div className={cn(
+              "pt-4 pb-3 border-t transition-all duration-300",
+              isScrolled
+                ? "border-white/10"
+                : "border-gray-200/50 dark:border-gray-700/50"
+            )}>
               <div className="flex items-center px-3 space-x-3">
                 <Link
                   href="/login"
@@ -147,7 +172,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 
