@@ -26,7 +26,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = () => {
       if (showUserMenu) {
         setShowUserMenu(false);
       }

@@ -57,8 +57,8 @@ export default function RegisterPage() {
 
       signUp(userData);
       router.push('/profile');
-    } catch (err: any) {
-      setError(err.message || 'An error occurred during registration');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred during registration');
     } finally {
       setIsLoading(false);
     }
