@@ -21,7 +21,7 @@ export default function Dashboard() {
 
         <div className="space-y-8">
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6">
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
                   <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6">
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-4">
                   <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6">
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
                   <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Recent Activity</h2>
             <div className="space-y-3">
               {shares.length === 0 ? (

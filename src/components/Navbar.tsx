@@ -2,15 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { usePathname, useRouter } from 'next/navigation';
+import { Bars3Icon, XMarkIcon, UserCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import { cn } from '../lib/utils';
+import { useAppStore } from '@/store';
 
 const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { currentUser, isAuthenticated, signOut } = useAppStore();
   const isEventsPage = pathname?.startsWith('/events') ?? false;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +24,28 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showUserMenu) {
+        setShowUserMenu(false);
+      }
+    };
+
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showUserMenu]);
+
+  const handleSignOut = () => {
+    signOut();
+    setShowUserMenu(false);
+    router.push('/');
+  };
   
   const jobLinks = [
     { name: 'Home', href: '/' },
@@ -80,18 +106,54 @@ const Navbar = () => {
 
           {/* Right side buttons */}
           <div className="hidden md:flex md:items-center md:space-x-4">
-            <Link
-              href="/login"
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/register"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-            >
-              Sign up
-            </Link>
+            {isAuthenticated ? (
+              <>
+                {/* User Menu */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800 transition-all duration-200"
+                  >
+                    <UserCircleIcon className="h-5 w-5" />
+                    <span>{currentUser?.fullName}</span>
+                  </button>
+                  
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-lg shadow-lg border border-white/10 dark:border-white/10 py-1 z-50">
+                      <Link
+                        href="/profile"
+                        onClick={() => setShowUserMenu(false)}
+                        className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                      >
+                        View Profile
+                      </Link>
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 transition-colors duration-200 flex items-center space-x-2"
+                      >
+                        <ArrowRightOnRectangleIcon className="h-4 w-4" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
+                >
+                  Sign in
+                </Link>
+                <Link
+                  href="/register"
+                  className="inline-flex items-center px-4 py-2 backdrop-blur-md border border-indigo-400/30 text-sm font-medium rounded-lg text-white bg-indigo-600/20 hover:bg-indigo-600/30 hover:border-indigo-400/50 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
             <Link
               href={isEventsPage ? '/' : '/events'}
               className="inline-flex items-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-lg text-indigo-600 bg-transparent hover:bg-indigo-50 dark:text-indigo-400 dark:border-indigo-400 dark:hover:bg-indigo-900/20 transition-all duration-200"
@@ -146,20 +208,47 @@ const Navbar = () => {
                 ? "border-white/10"
                 : "border-gray-200/50 dark:border-gray-700/50"
             )}>
-              <div className="flex items-center px-3 space-x-3">
-                <Link
-                  href="/login"
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
-                >
-                  Sign in
-                </Link>
-                <Link
-                  href="/register"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600 transition-all duration-200"
-                >
-                  Sign up
-                </Link>
-              </div>
+              {isAuthenticated ? (
+                <div className="px-3 space-y-3">
+                  <div className="flex items-center space-x-3 px-3 py-2 bg-gray-100/50 dark:bg-gray-700/50 rounded-lg">
+                    <UserCircleIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{currentUser?.fullName}</span>
+                  </div>
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full text-center px-4 py-2 bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 text-sm font-medium rounded-lg text-white hover:bg-indigo-600/30 hover:border-indigo-400/50 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  >
+                    View Profile
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block w-full text-center px-4 py-2 bg-red-600/20 backdrop-blur-md border border-red-400/30 text-sm font-medium rounded-lg text-white hover:bg-red-600/30 hover:border-red-400/50 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center px-3 space-x-3">
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="inline-flex items-center px-4 py-2 backdrop-blur-md border border-indigo-400/30 text-sm font-medium rounded-lg text-white bg-indigo-600/20 hover:bg-indigo-600/30 hover:border-indigo-400/50 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  >
+                    Sign up
+                  </Link>
+                </div>
+              )}
               <div className="mt-3 px-3">
                 <Link
                   href={isEventsPage ? '/' : '/events'}

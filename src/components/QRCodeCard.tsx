@@ -32,7 +32,7 @@ export function QRCodeCard({ text }: { text: string }) {
 		QRCode.toCanvas(canvasRef.current, text, { width: 200, margin: 1, color: { light: '#ffffff', dark: '#000000' } })
 	}, [text])
 	return (
-		<div className="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-lg">
+		<div className="p-4 border border-white/10 dark:border-white/10 rounded-xl bg-white/20 dark:bg-gray-800/20 backdrop-blur-md shadow-lg">
 			<div className="flex flex-col items-center gap-3">
 				<div className="p-2 bg-white rounded-lg shadow-sm">
 					<canvas ref={canvasRef} className="rounded-md" />
@@ -42,7 +42,7 @@ export function QRCodeCard({ text }: { text: string }) {
 				</div>
 				<button 
 					onClick={() => copyToClipboard(text)}
-					className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-xs font-medium transition-colors duration-200"
+					className="px-3 py-1.5 bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 hover:bg-indigo-600/30 hover:border-indigo-400/50 text-white rounded-md text-xs font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
 				>
 					Copy Link
 				</button>

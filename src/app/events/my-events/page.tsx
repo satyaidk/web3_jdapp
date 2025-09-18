@@ -11,7 +11,7 @@ export default function MyEventsPage() {
             <p className="text-lg text-gray-600 dark:text-gray-300">Manage your registered and saved events</p>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6">
             <MyEvents />
           </div>
         </div>

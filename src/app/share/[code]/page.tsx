@@ -62,7 +62,7 @@ export default function SharePage() {
   return (
     <div className="w-full">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
+        <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6 lg:p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Share: {eventItem.title}
@@ -97,7 +97,7 @@ export default function SharePage() {
                   <option value="linkedin">LinkedIn</option>
                 </select>
                 <button 
-                  className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200" 
+                  className="w-full sm:w-auto px-6 py-3 bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 hover:bg-indigo-600/30 hover:border-indigo-400/50 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300" 
                   onClick={shareIntent}
                 >
                   Share Now
