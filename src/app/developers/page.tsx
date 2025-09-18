@@ -1,65 +1,75 @@
+"use client";
+import { useAppStore } from '@/store';
+import AddJob from '@/components/AddJob';
+
 export default function DevelopersPage() {
-  const jobs = [
+  const { jobs, addJob } = useAppStore();
+  
+  // Default jobs if none exist
+  const defaultJobs = [
     {
-      id: 1,
+      id: '1',
       title: 'Senior Frontend Developer',
       company: 'TechCorp',
       location: 'Remote',
-      type: 'Full-time',
+      type: 'Full-time' as const,
       salary: '$120,000 - $150,000',
       posted: '2 days ago',
       skills: ['React', 'TypeScript', 'Next.js']
     },
     {
-      id: 2,
+      id: '2',
       title: 'Backend Engineer',
       company: 'DevSolutions',
       location: 'New York, NY',
-      type: 'Full-time',
+      type: 'Full-time' as const,
       salary: '$130,000 - $160,000',
       posted: '1 week ago',
       skills: ['Node.js', 'Python', 'PostgreSQL']
     },
     {
-      id: 3,
+      id: '3',
       title: 'Full Stack Developer',
       company: 'WebMasters',
       location: 'Austin, TX',
-      type: 'Contract',
+      type: 'Contract' as const,
       salary: '$70 - $90/hr',
       posted: '3 days ago',
       skills: ['React', 'Node.js', 'MongoDB']
     },
-    { id: 4,
+    { 
+      id: '4',
       title: 'Cloud Engineer',
       company: 'CloudNet',
       location: 'Seattle, WA',
-      type: 'Full-time',
+      type: 'Full-time' as const,
       salary: '$120,000 - $150,000',
       posted: '2 weeks ago',
       skills: ['AWS', 'Docker', 'Kubernetes']
     },
     {
-      id: 5,
+      id: '5',
       title: 'Data Scientist',
       company: 'DataPros',
       location: 'Boston, MA',
-      type: 'Full-time',
+      type: 'Full-time' as const,
       salary: '$110,000 - $140,000',
       posted: '1 week ago',
       skills: ['Python', 'Machine Learning', 'SQL']
     },
     {
-      id: 6,
+      id: '6',
       title: 'AI Researcher',
       company: 'AI Innovators',
       location: 'Palo Alto, CA',
-      type: 'Full-time',
+      type: 'Full-time' as const,
       salary: '$130,000 - $160,000',
       posted: '1 week ago',
       skills: ['Python', 'TensorFlow', 'PyTorch']
     },
   ];
+  
+  const displayJobs = jobs.length > 0 ? jobs : defaultJobs;
 
   return (
     <div className="w-full">
@@ -73,9 +83,11 @@ export default function DevelopersPage() {
           </p>
         </div>
 
+        <AddJob onAddJob={addJob} />
+
         <div className="space-y-6">
-          {jobs.map((job) => (
-            <div key={job.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700 p-6">
+          {displayJobs.map((job) => (
+            <div key={job.id} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-white/10 dark:border-white/10 p-6">
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-3">
@@ -123,7 +135,7 @@ export default function DevelopersPage() {
                 </div>
                 
                 <div className="lg:flex-shrink-0">
-                  <button className="w-full lg:w-auto px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors duration-200">
+                  <button className="w-full lg:w-auto px-6 py-2 bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 hover:bg-indigo-600/30 hover:border-indigo-400/50 text-white rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                     Apply Now
                   </button>
                 </div>

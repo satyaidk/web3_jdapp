@@ -32,6 +32,62 @@ export type StakingPosition = {
 	rewardPerDay: number
 }
 
+export type Company = {
+	id: string
+	name: string
+	industry: string
+	description: string
+	location: string
+	employees: string
+	rating: number
+	website?: string
+	founded?: string
+}
+
+export type Job = {
+	id: string
+	title: string
+	company: string
+	location: string
+	type: 'Full-time' | 'Part-time' | 'Contract' | 'Internship'
+	salary: string
+	posted: string
+	skills: string[]
+	description?: string
+	requirements?: string[]
+	benefits?: string[]
+}
+
+export type Gig = {
+	id: string
+	title: string
+	client: string
+	budget: string
+	duration: string
+	level: 'Beginner' | 'Intermediate' | 'Expert'
+	category: string
+	description: string
+	skills: string[]
+	posted: string
+	location?: string
+	type?: 'Fixed Price' | 'Hourly'
+}
+
+export type User = {
+	id: string
+	email: string
+	password: string
+	fullName: string
+	title: string
+	about: string
+	location?: string
+	website?: string
+	skills?: string[]
+	experience?: string
+	avatar?: string
+	createdAt: number
+}
+
 type State = {
 	address?: string
 	events: EventItem[]
@@ -39,6 +95,12 @@ type State = {
 	shares: ShareRecord[]
 	balance: number
 	staked: StakingPosition[]
+	companies: Company[]
+	jobs: Job[]
+	gigs: Gig[]
+	users: User[]
+	currentUser?: User
+	isAuthenticated: boolean
 	setAddress: (addr?: string) => void
 	createEvent: (data: Omit<EventItem, 'id' | 'shortCode' | 'qrDataUrl'>) => EventItem
 	addQrToEvent: (eventId: string, qrDataUrl: string) => void
@@ -50,6 +112,13 @@ type State = {
 	stake: (amount: number) => StakingPosition
 	unstake: (positionId: string) => void
 	accrueRewards: () => number
+	addCompany: (company: Omit<Company, 'id'>) => Company
+	addJob: (job: Omit<Job, 'id'>) => Job
+	addGig: (gig: Omit<Gig, 'id'>) => Gig
+	signUp: (userData: Omit<User, 'id' | 'createdAt'>) => User
+	signIn: (email: string, password: string) => User | null
+	signOut: () => void
+	updateProfile: (userData: Partial<User>) => void
 }
 
 const DAILY_REWARD_RATE = 0.02
@@ -61,6 +130,12 @@ export const useAppStore = create<State>()(persist((set, get) => ({
 	shares: [],
 	balance: 0,
 	staked: [],
+	companies: [],
+	jobs: [],
+	gigs: [],
+	users: [],
+	currentUser: undefined,
+	isAuthenticated: false,
 	setAddress: (addr) => set({ address: addr }),
 	createEvent: (data) => {
 		const shortCode = uuidv4().slice(0, 6)
@@ -121,5 +196,54 @@ export const useAppStore = create<State>()(persist((set, get) => ({
 			return sum + p.amount * p.rewardPerDay * days
 		}, 0)
 		return total
+	},
+	addCompany: (company) => {
+		const newCompany: Company = { id: uuidv4(), ...company }
+		set({ companies: [newCompany, ...get().companies] })
+		return newCompany
+	},
+	addJob: (job) => {
+		const newJob: Job = { id: uuidv4(), ...job }
+		set({ jobs: [newJob, ...get().jobs] })
+		return newJob
+	},
+	addGig: (gig) => {
+		const newGig: Gig = { id: uuidv4(), ...gig }
+		set({ gigs: [newGig, ...get().gigs] })
+		return newGig
+	},
+	signUp: (userData) => {
+		const existingUser = get().users.find(u => u.email === userData.email)
+		if (existingUser) {
+			throw new Error('User with this email already exists')
+		}
+		const newUser: User = { id: uuidv4(), createdAt: Date.now(), ...userData }
+		set({ 
+			users: [newUser, ...get().users],
+			currentUser: newUser,
+			isAuthenticated: true
+		})
+		return newUser
+	},
+	signIn: (email, password) => {
+		const user = get().users.find(u => u.email === email && u.password === password)
+		if (user) {
+			set({ currentUser: user, isAuthenticated: true })
+			return user
+		}
+		return null
+	},
+	signOut: () => {
+		set({ currentUser: undefined, isAuthenticated: false })
+	},
+	updateProfile: (userData) => {
+		const currentUser = get().currentUser
+		if (!currentUser) return
+		
+		const updatedUser = { ...currentUser, ...userData }
+		set({ 
+			currentUser: updatedUser,
+			users: get().users.map(u => u.id === currentUser.id ? updatedUser : u)
+		})
 	},
 }), { name: 'scan2share-store' }))

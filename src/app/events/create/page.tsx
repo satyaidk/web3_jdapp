@@ -61,7 +61,7 @@ export default function CreateEventPage() {
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Create Event Form */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
+          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6 lg:p-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Event Details</h2>
             <form onSubmit={onSubmit} className="space-y-6">
               <div>
@@ -142,7 +142,7 @@ export default function CreateEventPage() {
               
               <button 
                 disabled={creating} 
-                className="w-full px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600 text-white font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full px-6 py-3 rounded-lg bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 hover:bg-indigo-600/30 hover:border-indigo-400/50 text-white font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {creating ? (
                   <span className="flex items-center justify-center">
@@ -170,7 +170,7 @@ export default function CreateEventPage() {
             
             <div className="space-y-4">
               {events.length === 0 && (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="text-center py-12 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl border border-white/10 dark:border-white/10">
                   <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -184,7 +184,7 @@ export default function CreateEventPage() {
               {events.map(evt => {
                 const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/share/${evt.shortCode}`;
                 return (
-                  <div key={evt.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                  <div key={evt.id} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6">
                     <div className="flex flex-col lg:flex-row lg:items-start lg:gap-6">
                       <div className="flex-1 space-y-3">
                         <div className="flex items-start justify-between">
@@ -224,7 +224,7 @@ export default function CreateEventPage() {
                             />
                             <button 
                               onClick={() => copyToClipboard(shareUrl)}
-                              className="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors duration-200"
+                              className="px-3 py-2 bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 hover:bg-indigo-600/30 hover:border-indigo-400/50 text-white rounded-lg text-sm font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                             >
                               Copy
                             </button>
@@ -243,13 +243,13 @@ export default function CreateEventPage() {
             <div id="past-events" className="mt-8">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Past Events</h3>
               {pastEvents?.length === 0 ? (
-                <div className="text-center py-8 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl border border-white/10 dark:border-white/10">
                   <p className="text-gray-600 dark:text-gray-300">No past events yet.</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {pastEvents?.map(evt => (
-                    <div key={evt.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                    <div key={evt.id} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-lg border border-white/10 dark:border-white/10 p-4">
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="font-medium text-gray-900 dark:text-white">{evt.title}</h4>

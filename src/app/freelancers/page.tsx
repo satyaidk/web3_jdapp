@@ -1,65 +1,87 @@
+"use client";
+import { useAppStore } from '@/store';
+import AddGig from '@/components/AddGig';
+
 export default function FreelancersPage() {
-  const gigs = [
+  const { gigs, addGig } = useAppStore();
+  
+  // Default gigs if none exist
+  const defaultGigs = [
     {
-      id: 1,
+      id: '1',
       title: 'Website Redesign',
       client: 'Startup Inc.',
       budget: '$2,000 - $5,000',
       posted: '1 day ago',
       skills: ['Web Design', 'UI/UX', 'Responsive Design'],
       duration: '1-3 months',
-      level: 'Intermediate'
+      level: 'Intermediate' as const,
+      category: 'Web Development',
+      description: 'Complete redesign of company website with modern UI/UX'
     },
     {
-      id: 2,
+      id: '2',
       title: 'Mobile App Development',
       client: 'MobileFirst',
       budget: '$5,000 - $10,000',
       posted: '3 days ago',
       skills: ['React Native', 'Firebase', 'API Integration'],
       duration: '3-6 months',
-      level: 'Expert'
+      level: 'Expert' as const,
+      category: 'Mobile Development',
+      description: 'Build a cross-platform mobile application'
     },
     {
-      id: 3,
+      id: '3',
       title: 'E-commerce Development',
       client: 'ShopLocal',
       budget: '$3,000 - $7,000',
       posted: '1 week ago',
       skills: ['Shopify', 'Liquid', 'JavaScript'],
       duration: '2-4 months',
-      level: 'Intermediate'
+      level: 'Intermediate' as const,
+      category: 'E-commerce',
+      description: 'Develop a custom e-commerce solution'
     },
-    { id: 4,
+    { 
+      id: '4',
       title: 'Content Writing',
       client: 'BloggersHub', 
       budget: '$1,000 - $3,000',
       posted: '2 days ago',
       skills: ['Copywriting', 'SEO', 'Blogging'],
       duration: '1-2 months',
-      level: 'Intermediate'
+      level: 'Intermediate' as const,
+      category: 'Writing',
+      description: 'Create engaging content for tech blog'
     },
     {
-      id: 5,
+      id: '5',
       title: 'Graphic Design',
       client: 'DesignStudio',
       budget: '$1,500 - $4,000',
       posted: '1 week ago',
       skills: ['Photoshop', 'Illustrator', 'Branding'],
       duration: '1-3 months',
-      level: 'Intermediate'
+      level: 'Intermediate' as const,
+      category: 'Design',
+      description: 'Design brand identity and marketing materials'
     },
     {
-      id: 6,
+      id: '6',
       title: 'Digital Marketing',
       client: 'MarketPros',
       budget: '$2,000 - $6,000',
       posted: '4 days ago',
       skills: ['SEO', 'Google Ads', 'Social Media'],
       duration: '2-4 months',
-      level: 'Intermediate'
+      level: 'Intermediate' as const,
+      category: 'Marketing',
+      description: 'Develop and execute digital marketing strategy'
     },
   ];
+  
+  const displayGigs = gigs.length > 0 ? gigs : defaultGigs;
 
   return (
     <div className="w-full">
@@ -73,9 +95,11 @@ export default function FreelancersPage() {
           </p>
         </div>
 
+        <AddGig onAddGig={addGig} />
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {gigs.map((gig) => (
-            <div key={gig.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 p-6">
+          {displayGigs.map((gig) => (
+            <div key={gig.id} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-white/10 dark:border-white/10 p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{gig.title}</h3>
@@ -121,7 +145,7 @@ export default function FreelancersPage() {
                 ))}
               </div>
               
-              <button className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors duration-200">
+              <button className="w-full px-4 py-2 bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 hover:bg-indigo-600/30 hover:border-indigo-400/50 text-white rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                 Apply Now
               </button>
             </div>

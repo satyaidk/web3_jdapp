@@ -1,16 +1,25 @@
+"use client";
+import { useAppStore } from '@/store';
+import AddCompany from '@/components/AddCompany';
+
 export default function CompaniesPage() {
-  const companies = [
-    { id: 1, name: 'TechCorp', industry: 'Technology', location: 'San Francisco, CA', employees: '500-1000', rating: 4.8 },
-    { id: 2, name: 'DevSolutions', industry: 'Software Development', location: 'New York, NY', employees: '100-500', rating: 4.6 },
-    { id: 3, name: 'WebMasters', industry: 'Web Development', location: 'Austin, TX', employees: '50-100', rating: 4.7 },
-    { id: 4, name: 'CloudNet', industry: 'Cloud Services', location: 'Seattle, WA', employees: '1000+', rating: 4.9 },
-    { id: 5, name: 'DataPros', industry: 'Data Analytics', location: 'Boston, MA', employees: '200-500', rating: 4.5 },
-    { id: 6, name: 'AI Innovators', industry: 'Artificial Intelligence', location: 'Palo Alto, CA', employees: '100-200', rating: 4.8 },
-    { id: 7, name: 'CyberSecure', industry: 'Cybersecurity', location: 'Chicago, IL', employees: '50-100', rating: 4.6 },
-    { id: 8, name: 'FinTech Solutions', industry: 'Financial Technology', location: 'New York, NY', employees: '500-1000', rating: 4.7 },
-    { id: 9, name: 'HealthTech', industry: 'Healthcare Technology', location: 'San Diego, CA', employees: '200-500', rating: 4.4 },
-    { id: 10, name: 'GreenEnergy', industry: 'Renewable Energy', location: 'Denver, CO', employees: '100-200', rating: 4.5 },
+  const { companies, addCompany } = useAppStore();
+  
+  // Default companies if none exist
+  const defaultCompanies = [
+    { id: '1', name: 'TechCorp', industry: 'Technology', description: 'Leading software development company', location: 'San Francisco, CA', employees: '500-1000', rating: 4.8 },
+    { id: '2', name: 'DevSolutions', industry: 'Software Development', description: 'Custom software solutions', location: 'New York, NY', employees: '100-500', rating: 4.6 },
+    { id: '3', name: 'WebMasters', industry: 'Web Development', description: 'Full-stack web solutions', location: 'Austin, TX', employees: '50-100', rating: 4.7 },
+    { id: '4', name: 'CloudNet', industry: 'Cloud Services', description: 'Cloud infrastructure services', location: 'Seattle, WA', employees: '1000+', rating: 4.9 },
+    { id: '5', name: 'DataPros', industry: 'Data Analytics', description: 'Big data solutions provider', location: 'Boston, MA', employees: '200-500', rating: 4.5 },
+    { id: '6', name: 'AI Innovators', industry: 'Artificial Intelligence', description: 'AI research and development', location: 'Palo Alto, CA', employees: '100-200', rating: 4.8 },
+    { id: '7', name: 'CyberSecure', industry: 'Cybersecurity', description: 'Cybersecurity solutions', location: 'Chicago, IL', employees: '50-100', rating: 4.6 },
+    { id: '8', name: 'FinTech Solutions', industry: 'Financial Technology', description: 'Financial technology solutions', location: 'New York, NY', employees: '500-1000', rating: 4.7 },
+    { id: '9', name: 'HealthTech', industry: 'Healthcare Technology', description: 'Healthcare technology solutions', location: 'San Diego, CA', employees: '200-500', rating: 4.4 },
+    { id: '10', name: 'GreenEnergy', industry: 'Renewable Energy', description: 'Renewable energy solutions', location: 'Denver, CO', employees: '100-200', rating: 4.5 },
   ];
+  
+  const displayCompanies = companies.length > 0 ? companies : defaultCompanies;
 
   return (
     <div className="w-full">
@@ -24,9 +33,11 @@ export default function CompaniesPage() {
           </p>
         </div>
 
+        <AddCompany onAddCompany={addCompany} />
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {companies.map((company) => (
-            <div key={company.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 p-6">
+          {displayCompanies.map((company) => (
+            <div key={company.id} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-white/10 dark:border-white/10 p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{company.name}</h3>
@@ -60,7 +71,7 @@ export default function CompaniesPage() {
               </div>
               
               <div className="mt-6">
-                <button className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors duration-200">
+                <button className="w-full px-4 py-2 bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 hover:bg-indigo-600/30 hover:border-indigo-400/50 text-white rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                   View Jobs
                 </button>
               </div>

@@ -25,7 +25,7 @@ export default function RewardsPage() {
 
                 <div className="space-y-8">
                     {/* Balance Card */}
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
+                    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6 lg:p-8">
                         <div className="text-center">
                             <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <svg className="w-8 h-8 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@ export default function RewardsPage() {
                     </div>
 
                     {/* Staking Section */}
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
+                    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6 lg:p-8">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Stake Tokens</h2>
                         <div className="space-y-6">
                             <div className="flex flex-col sm:flex-row gap-4">
@@ -59,7 +59,7 @@ export default function RewardsPage() {
                                         &nbsp;
                                     </label>
                                     <button 
-                                        className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200" 
+                                        className="w-full sm:w-auto px-6 py-3 bg-indigo-600/20 backdrop-blur-md border border-indigo-400/30 hover:bg-indigo-600/30 hover:border-indigo-400/50 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300" 
                                         onClick={() => { const n = Number(amount); if (n>0) { stake(n); setAmount('') } }}
                                     >
                                         Stake Tokens
@@ -80,7 +80,7 @@ export default function RewardsPage() {
                     </div>
 
                     {/* Staking Positions */}
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 lg:p-8">
+                    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg border border-white/10 dark:border-white/10 p-6 lg:p-8">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Active Positions</h2>
                         {staked.length === 0 ? (
                             <div className="text-center py-12">
