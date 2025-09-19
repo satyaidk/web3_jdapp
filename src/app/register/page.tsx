@@ -1,13 +1,15 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAppStore } from '@/store';
+import { useAuthSync } from '@/hooks/useAuthSync';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { signUp } = useAppStore();
+  const { signUp, isAuthenticated } = useAppStore();
+  const { status } = useAuthSync();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -16,6 +18,13 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // Redirect if already authenticated
+    if (isAuthenticated && status === 'authenticated') {
+      router.push('/profile');
+    }
+  }, [isAuthenticated, status, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
