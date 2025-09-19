@@ -9,7 +9,7 @@ interface GoogleSignInButtonProps {
 
 export default function GoogleSignInButton({ className = '', children }: GoogleSignInButtonProps) {
   const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl: '/profile' });
+    signIn('google', { callbackUrl: '/' });
   };
 
   return (

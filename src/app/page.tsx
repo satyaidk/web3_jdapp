@@ -1,4 +1,26 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthSync } from '@/hooks/useAuthSync';
+import { useAppStore } from '@/store';
+
 export default function Home() {
+  const router = useRouter();
+  const { status } = useAuthSync();
+  const { isAuthenticated } = useAppStore();
+
+  useEffect(() => {
+    // If user is authenticated, redirect to profile after a short delay to allow sync
+    if (isAuthenticated && status === 'authenticated') {
+      const timer = setTimeout(() => {
+        router.push('/profile');
+      }, 1000); // 1 second delay to allow auth sync
+
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, status, router]);
+
   return (
     <div className="w-full">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">

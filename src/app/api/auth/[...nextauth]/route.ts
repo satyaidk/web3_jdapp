@@ -22,7 +22,7 @@ const handler = NextAuth({
     })
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       // Always allow Google sign-in
       console.log('Sign in attempt:', { user: user?.email, provider: account?.provider });
       return true;
@@ -45,6 +45,12 @@ const handler = NextAuth({
         token.id = user.id || token.sub || '';
       }
       return token;
+    },
+    async redirect({ url, baseUrl }) {
+      // Handle redirect after successful authentication
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     }
   },
   pages: {
