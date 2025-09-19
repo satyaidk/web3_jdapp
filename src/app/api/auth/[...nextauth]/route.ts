@@ -22,29 +22,35 @@ const handler = NextAuth({
     })
   ],
   callbacks: {
-    async signIn() {
+    async signIn({ user, account, profile }) {
       // Always allow Google sign-in
-      return true
+      console.log('Sign in attempt:', { user: user?.email, provider: account?.provider });
+      return true;
     },
     async session({ session, token }) {
       // Store user info in session for client-side use
       if (session.user && token.sub) {
-        session.user.id = token.sub
-        session.user.provider = 'google'
+        session.user.id = token.sub;
+        session.user.provider = 'google';
       }
-      return session
+      return session;
     },
     async jwt({ token, user, account }) {
-      if (user) {
-        token.id = user.id || ''
-        token.provider = account?.provider
+      // Persist the OAuth access_token to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token;
+        token.provider = account.provider;
       }
-      return token
+      if (user) {
+        token.id = user.id || token.sub || '';
+      }
+      return token;
     }
   },
   pages: {
     signIn: '/login',
   },
+  debug: process.env.NODE_ENV === 'development',
 })
 
 export { handler as GET, handler as POST }
