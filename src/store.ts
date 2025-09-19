@@ -86,6 +86,7 @@ export type User = {
 	experience?: string
 	avatar?: string
 	createdAt: number
+	provider?: 'google' | 'credentials'
 }
 
 type State = {
@@ -117,6 +118,7 @@ type State = {
 	addGig: (gig: Omit<Gig, 'id'>) => Gig
 	signUp: (userData: Omit<User, 'id' | 'createdAt'>) => User
 	signIn: (email: string, password: string) => User | null
+	signInWithOAuth: (userData: Omit<User, 'id' | 'createdAt'>) => User
 	signOut: () => void
 	updateProfile: (userData: Partial<User>) => void
 }
@@ -232,6 +234,20 @@ export const useAppStore = create<State>()(persist((set, get) => ({
 			return user
 		}
 		return null
+	},
+	signInWithOAuth: (userData) => {
+		const existingUser = get().users.find(u => u.email === userData.email)
+		if (existingUser) {
+			set({ currentUser: existingUser, isAuthenticated: true })
+			return existingUser
+		}
+		const newUser: User = { id: uuidv4(), createdAt: Date.now(), ...userData }
+		set({ 
+			users: [newUser, ...get().users],
+			currentUser: newUser,
+			isAuthenticated: true
+		})
+		return newUser
 	},
 	signOut: () => {
 		set({ currentUser: undefined, isAuthenticated: false })

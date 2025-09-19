@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAppStore } from '@/store';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -144,6 +145,21 @@ export default function LoginPage() {
                   'Sign in'
                 )}
               </button>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300 dark:border-gray-600" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-gray-500 dark:text-gray-400">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <GoogleSignInButton />
             </div>
           </form>
         </div>
