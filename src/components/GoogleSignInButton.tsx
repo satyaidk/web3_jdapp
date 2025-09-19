@@ -1,7 +1,6 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 interface GoogleSignInButtonProps {
   className?: string;
@@ -9,23 +8,8 @@ interface GoogleSignInButtonProps {
 }
 
 export default function GoogleSignInButton({ className = '', children }: GoogleSignInButtonProps) {
-  const router = useRouter();
-  
-  const handleGoogleSignIn = async () => {
-    try {
-      const result = await signIn('google', { 
-        callbackUrl: '/profile',
-        redirect: false 
-      });
-      
-      if (result?.ok) {
-        router.push('/profile');
-      } else if (result?.error) {
-        console.error('Google sign-in error:', result.error);
-      }
-    } catch (error) {
-      console.error('Sign-in error:', error);
-    }
+  const handleGoogleSignIn = () => {
+    signIn('google', { callbackUrl: '/profile' });
   };
 
   return (
