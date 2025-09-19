@@ -1,53 +1,75 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuthSync } from '@/hooks/useAuthSync';
 import { useAppStore } from '@/store';
+import Link from 'next/link';
 
 export default function Home() {
-  const router = useRouter();
-  const { status } = useAuthSync();
-  const { isAuthenticated } = useAppStore();
-
-  useEffect(() => {
-    // If user is authenticated, redirect to profile after a short delay to allow sync
-    if (isAuthenticated && status === 'authenticated') {
-      const timer = setTimeout(() => {
-        router.push('/profile');
-      }, 1000); // 1 second delay to allow auth sync
-
-      return () => clearTimeout(timer);
-    }
-  }, [isAuthenticated, status, router]);
+  // Sync authentication state but don't redirect automatically
+  useAuthSync();
+  const { isAuthenticated, currentUser } = useAppStore();
 
   return (
     <div className="w-full">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            Welcome to{' '}
-            <span className="text-indigo-600 dark:text-indigo-400">Web3 Job Network</span>
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-            Connect with opportunities that match your skills and interests. 
-            Join thousands of professionals finding their next career move.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="/companies" 
-              className="inline-flex items-center px-6 py-3 backdrop-blur-md border border-indigo-400/30 text-base font-medium rounded-lg text-white bg-indigo-600/20 hover:bg-indigo-600/30 hover:border-indigo-400/50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              Get Started
-            </a>
-            <a 
-              href="/events" 
-              className="inline-flex items-center px-6 py-3 border border-indigo-600 text-base font-medium rounded-lg text-indigo-600 bg-transparent hover:bg-indigo-50 dark:text-indigo-400 dark:border-indigo-400 dark:hover:bg-indigo-900/20 transition-all duration-200"
-            >
-              Explore Events
-            </a>
-          </div>
+          {isAuthenticated && currentUser ? (
+            <>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+                Welcome back,{' '}
+                <span className="text-indigo-600 dark:text-indigo-400">{currentUser.fullName}</span>
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+                Ready to explore new opportunities? Check out the latest jobs, companies, and events.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link 
+                  href="/profile" 
+                  className="inline-flex items-center px-6 py-3 backdrop-blur-md border border-indigo-400/30 text-base font-medium rounded-lg text-white bg-indigo-600/20 hover:bg-indigo-600/30 hover:border-indigo-400/50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  View Profile
+                </Link>
+                <Link 
+                  href="/companies" 
+                  className="inline-flex items-center px-6 py-3 border border-indigo-600 text-base font-medium rounded-lg text-indigo-600 bg-transparent hover:bg-indigo-50 dark:text-indigo-400 dark:border-indigo-400 dark:hover:bg-indigo-900/20 transition-all duration-200"
+                >
+                  Browse Companies
+                </Link>
+                <Link 
+                  href="/events" 
+                  className="inline-flex items-center px-6 py-3 border border-indigo-600 text-base font-medium rounded-lg text-indigo-600 bg-transparent hover:bg-indigo-50 dark:text-indigo-400 dark:border-indigo-400 dark:hover:bg-indigo-900/20 transition-all duration-200"
+                >
+                  Explore Events
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+                Welcome to{' '}
+                <span className="text-indigo-600 dark:text-indigo-400">Web3 Job Network</span>
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+                Connect with opportunities that match your skills and interests. 
+                Join thousands of professionals finding their next career move.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link 
+                  href="/register" 
+                  className="inline-flex items-center px-6 py-3 backdrop-blur-md border border-indigo-400/30 text-base font-medium rounded-lg text-white bg-indigo-600/20 hover:bg-indigo-600/30 hover:border-indigo-400/50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  Get Started
+                </Link>
+                <Link 
+                  href="/events" 
+                  className="inline-flex items-center px-6 py-3 border border-indigo-600 text-base font-medium rounded-lg text-indigo-600 bg-transparent hover:bg-indigo-50 dark:text-indigo-400 dark:border-indigo-400 dark:hover:bg-indigo-900/20 transition-all duration-200"
+                >
+                  Explore Events
+                </Link>
+              </div>
+            </>
+          )}
         </div>
         
         {/* Features Grid */}
@@ -60,7 +82,7 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">For Companies</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">Find the best talent for your team with our advanced matching algorithm and comprehensive candidate profiles.</p>
-            <a 
+            <Link 
               href="/companies" 
               className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium transition-colors duration-200 group-hover:translate-x-1"
             >
@@ -68,7 +90,7 @@ export default function Home() {
               <svg className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-            </a>
+            </Link>
           </div>
           
           <div className="group p-6 lg:p-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-white/10 dark:border-white/10">
@@ -79,7 +101,7 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">For Developers</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">Discover your dream job with personalized recommendations and direct connections to top tech companies.</p>
-            <a 
+            <Link 
               href="/developers" 
               className="inline-flex items-center text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium transition-colors duration-200 group-hover:translate-x-1"
             >
@@ -87,7 +109,7 @@ export default function Home() {
               <svg className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-            </a>
+            </Link>
           </div>
           
           <div className="group p-6 lg:p-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-white/10 dark:border-white/10">
@@ -98,7 +120,7 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">For Freelancers</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">Find freelance opportunities that fit your schedule and expertise with our flexible project marketplace.</p>
-            <a 
+            <Link 
               href="/freelancers" 
               className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors duration-200 group-hover:translate-x-1"
             >
@@ -106,7 +128,7 @@ export default function Home() {
               <svg className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
 
