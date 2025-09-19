@@ -22,7 +22,7 @@ export default function RegisterPage() {
   useEffect(() => {
     // Redirect if already authenticated
     if (isAuthenticated && status === 'authenticated') {
-      router.push('/profile');
+      router.push('/');
     }
   }, [isAuthenticated, status, router]);
 
@@ -59,7 +59,7 @@ export default function RegisterPage() {
       };
 
       signUp(userData);
-      router.push('/profile');
+      router.push('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during registration');
     } finally {

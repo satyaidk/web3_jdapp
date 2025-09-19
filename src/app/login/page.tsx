@@ -20,7 +20,7 @@ export default function LoginPage() {
   useEffect(() => {
     // Redirect if already authenticated
     if (isAuthenticated && status === 'authenticated') {
-      router.push('/profile');
+      router.push('/');
     }
   }, [isAuthenticated, status, router]);
 
@@ -32,7 +32,7 @@ export default function LoginPage() {
     try {
       const user = signIn(formData.email, formData.password);
       if (user) {
-        router.push('/profile');
+        router.push('/');
       } else {
         setError('Invalid email or password');
       }
