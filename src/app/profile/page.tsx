@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/store';
+import { signOut as nextAuthSignOut } from 'next-auth/react';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -73,9 +74,22 @@ export default function ProfilePage() {
     }));
   };
 
-  const handleSignOut = () => {
-    signOut();
-    router.push('/');
+  const handleSignOut = async () => {
+    try {
+      // Sign out from NextAuth (for OAuth users)
+      await nextAuthSignOut({ callbackUrl: '/' });
+      
+      // Sign out from our Zustand store
+      signOut();
+      
+      // Redirect to home page
+      router.push('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      // Fallback: just sign out from our store
+      signOut();
+      router.push('/');
+    }
   };
 
   if (!isAuthenticated || !currentUser) {

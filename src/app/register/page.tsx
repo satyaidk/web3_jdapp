@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAppStore } from '@/store';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -11,12 +12,7 @@ export default function RegisterPage() {
     fullName: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    title: '',
-    about: '',
-    location: '',
-    website: '',
-    skills: ''
+    confirmPassword: ''
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -40,17 +36,15 @@ export default function RegisterPage() {
     }
 
     try {
-      const skillsArray = formData.skills.split(',').map(skill => skill.trim()).filter(Boolean);
-      
       const userData = {
         fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
-        title: formData.title,
-        about: formData.about,
-        location: formData.location || undefined,
-        website: formData.website || undefined,
-        skills: skillsArray.length > 0 ? skillsArray : undefined,
+        title: 'User',
+        about: '',
+        location: undefined,
+        website: undefined,
+        skills: undefined,
         experience: undefined,
         avatar: undefined
       };
@@ -103,7 +97,7 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <div className="grid grid-cols-1 gap-6">
+            <div className="space-y-6">
               <div>
                 <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Full Name *
@@ -135,22 +129,6 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   className="w-full rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter your email"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Professional Title *
-                </label>
-                <input
-                  id="title"
-                  name="title"
-                  type="text"
-                  required
-                  value={formData.title}
-                  onChange={handleChange}
-                  className="w-full rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                  placeholder="e.g., Senior Developer, Designer, etc."
                 />
               </div>
 
@@ -187,66 +165,6 @@ export default function RegisterPage() {
                   placeholder="Confirm your password"
                 />
               </div>
-
-              <div>
-                <label htmlFor="about" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  About You
-                </label>
-                <textarea
-                  id="about"
-                  name="about"
-                  rows={3}
-                  value={formData.about}
-                  onChange={handleChange}
-                  className="w-full rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 resize-none"
-                  placeholder="Tell us about yourself, your experience, and what you do..."
-                />
-              </div>
-
-              <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Location
-                </label>
-                <input
-                  id="location"
-                  name="location"
-                  type="text"
-                  value={formData.location}
-                  onChange={handleChange}
-                  className="w-full rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                  placeholder="e.g., San Francisco, CA"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="website" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Website
-                </label>
-                <input
-                  id="website"
-                  name="website"
-                  type="url"
-                  value={formData.website}
-                  onChange={handleChange}
-                  className="w-full rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                  placeholder="https://yourwebsite.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="skills" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Skills
-                </label>
-                <input
-                  id="skills"
-                  name="skills"
-                  type="text"
-                  value={formData.skills}
-                  onChange={handleChange}
-                  className="w-full rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                  placeholder="React, JavaScript, Python (comma separated)"
-                />
-              </div>
             </div>
 
             <div>
@@ -267,6 +185,23 @@ export default function RegisterPage() {
                   'Create Account'
                 )}
               </button>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300 dark:border-gray-600" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-gray-500 dark:text-gray-400">
+                  Or sign up with
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <GoogleSignInButton>
+                Sign up with Google
+              </GoogleSignInButton>
             </div>
           </form>
         </div>
